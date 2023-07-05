@@ -15,24 +15,30 @@
  */
 package me.zhengjie.modules.system.service.impl;
 
-import cn.hutool.core.date.BetweenFormater;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import me.zhengjie.exception.BadRequestException;
 import me.zhengjie.modules.system.service.MonitorService;
 import me.zhengjie.utils.ElAdminConstant;
 import me.zhengjie.utils.FileUtil;
 import me.zhengjie.utils.StringUtils;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
-import oshi.hardware.*;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.GlobalMemory;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.VirtualMemory;
 import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
 import oshi.software.os.OperatingSystem;
 import oshi.util.FormatUtil;
 import oshi.util.Util;
+
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
 * @author Zheng Jie
@@ -177,7 +183,7 @@ public class MonitorServiceImpl implements MonitorService {
         long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         Date date = new Date(time);
         // 计算项目运行时间
-        String formatBetween = DateUtil.formatBetween(date, new Date(),BetweenFormater.Level.HOUR);
+        long formatBetween = DateUtil.between(date, new Date(), DateUnit.DAY);
         // 系统信息
         systemInfo.put("os", os.toString());
         systemInfo.put("day", formatBetween);
